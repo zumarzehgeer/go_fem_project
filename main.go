@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"fem_project/internal/app"
+	"fem_project/internal/routes"
 )
 
 func main() {
@@ -19,9 +20,11 @@ func main() {
 		panic(err)
 	}
 
-	http.HandleFunc("/health", app.HealthCheck)
+	r := routes.SetupRoutes(app)
+
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", port),
+		Handler:      r,
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
